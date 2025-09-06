@@ -2,23 +2,23 @@ import asyncio
 from typing import List, Dict
 
 from telethon import TelegramClient, events, Button
-from models import JobTypeNode
+from models import Graph, Node
 
-nodes: List[jobTypeNode] = [
-    jobTypeNode(0, ''),
-    jobTypeNode(1, 'Отправить отчет'),
-    jobTypeNode(2, 'Монтаж'),
-    jobTypeNode(3, 'пусконаладка'),
-    jobTypeNode(4, 'Sharazh'),
-    jobTypeNode(5, 'KHC'),
-    jobTypeNode(6, 'Кабель'),
-    jobTypeNode(7, 'Оборудование'),
-    jobTypeNode(8, '5е'),
-    jobTypeNode(9, '6е'),
-    jobTypeNode(10, 'Оптоволокно'),
-    jobTypeNode(11, 'Прочее'),
-    jobTypeNode(12, 'Камеры'),
-    jobTypeNode(13, 'Заявка')
+nodes: List[Node] = [
+    Node(0, ''),
+    Node(1, 'Отправить отчет'),
+    Node(2, 'Монтаж'),
+    Node(3, 'пусконаладка'),
+    Node(4, 'Sharazh'),
+    Node(5, 'KHC'),
+    Node(6, 'Кабель'),
+    Node(7, 'Оборудование'),
+    Node(8, '5е'),
+    Node(9, '6е'),
+    Node(10, 'Оптоволокно'),
+    Node(11, 'Прочее'),
+    Node(12, 'Камеры'),
+    Node(13, 'Заявка')
 ]
 
 graph = {
@@ -44,18 +44,14 @@ client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_tok
 
 
 class Menu:
-    def __init__(self, adjacency_list: List[List[int]], nodes_list: List[jobTypeNode]):
-        self.graph:Dict[JobTypeNode: List[JobTypeNode]] = {
-            vertex: [nodes_list[child] for child in childs]
-            for vertex, childs in enumerate(adjacency_list)
-            if childs
-        }
-        self.cur, self.prev = None, None
+    def __init__(self, graph: Graph, entry_point: Node):
+        self.graph = graph
+        self.cur, self.prev = entry_point, None
 
     def choose(self, node_number: int):
         self.prev = self.cur
         self.cur = node_number
-        self.current_options: Dict[JobTypeNode: List[JobTypeNode]] = [[Button.inline(child.title, child.id)] for child in nodes[node_number].childs] + \
+        self.current_options: Dict[Node: List[Node]] = [[Button.inline(child.title, child.id)] for child in nodes[node_number].childs] + \
                      [([Button.inline("Назад", node_number)] * node_number)[:1]]
 
     def get_buttons(self):
