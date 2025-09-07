@@ -1,8 +1,8 @@
 import asyncio
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from telethon import TelegramClient, events, Button
-from models import Graph, Node
+from models import Graph, Node, Edge
 
 nodes: List[Node] = [
     Node(0, ''),
@@ -21,20 +21,29 @@ nodes: List[Node] = [
     Node(13, 'Заявка')
 ]
 
-graph = {
+edges = {
     0: [1, 13],
     1: [2, 3, 4],
     2: [5, 6, 7, 11],
     6: [8, 9, 10],
     7: [12]
 }
-adjacency_list = [[] for i in range(14)]
-for line in graph:
-    adjacency_list[line] = graph[line]
-
-for parent, childs in graph.items():
-    print(parent, childs)
-    nodes[parent].childs = [nodes[child] for child in childs]
+edges: List[Edge] = [
+    Edge({src, dst, None}) for src, dst in [
+    (nodes[0], nodes[1]),
+    (nodes[0], nodes[13]),
+    (nodes[1], nodes[2]),
+    (nodes[1], nodes[3]),
+    (nodes[1], nodes[4]),
+    (nodes[2], nodes[5]),
+    (nodes[2], nodes[6]),
+    (nodes[2], nodes[7]),
+    (nodes[2], nodes[11]),
+    (nodes[6], nodes[8]),
+    (nodes[6], nodes[9]),
+    (nodes[6], nodes[10]),
+    (nodes[7], nodes[12])
+]]
 
 api_id = '27692732'  # Replace with your API ID
 api_hash = 'cca60cccebac74004a31fec133c9c275'  # Replace with your API Hash

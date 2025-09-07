@@ -3,7 +3,6 @@ from dataclasses import dataclass, field
 
 from typing import List, Dict, Tuple, Optional, Sequence
 
-from xml2graph import adj_list
 
 
 # @dataclass
@@ -21,8 +20,9 @@ class Edge:
 
 @dataclass
 class Node:
-    id: Sequence[str]
+    id: int
     value: Sequence[str]
+    is_leaf: bool
 
 @dataclass
 class Graph:
