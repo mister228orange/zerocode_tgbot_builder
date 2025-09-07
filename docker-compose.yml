@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  zerocode_tgbot:
+    build: .
+    container_name: zerocode_tgbot
+    restart: unless-stopped
+    volumes:
+      - ./secrets.yaml:/app/secrets.yaml:ro
+      - ./go_bot_project.zip:/app/go_bot_project.zip:ro
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Europe/Moscow
+    # If you want to run on a specific IP, set network_mode or use extra_hosts
